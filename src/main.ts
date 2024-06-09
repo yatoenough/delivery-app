@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -8,6 +8,8 @@ async function bootstrap() {
 
 	app.enableCors();
 	app.setGlobalPrefix('/api');
+
+	app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
 	await app.listen(port, () =>
 		new Logger().log(`Application started on port ${port}`, 'NestApplication')
